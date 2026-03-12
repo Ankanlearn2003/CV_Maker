@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ cv.fullName }} - CV</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.5; color: #333; max-width: 900px; margin: 0 auto; padding: 40px; background: #fff; }
+        @media print {
+            @page { margin: 0; }
+            body { padding: 15mm !important; margin: 0 !important; }
+            .no-print { display: none; }
+            .custom-print-footer { display: flex !important; justify-content: space-between; position: fixed; bottom: 10mm; left: 15mm; right: 15mm; font-size: 10px; color: #555; border-top: 1px solid #ddd; padding-top: 5px; }
+        }
+        .custom-print-footer { display: none; }
+
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid #ccc; padding-bottom: 20px;}
+        .header h1 { margin: 0 0 5px 0; font-size: 2.5rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase;}
+        .contact-info { font-size: 0.9rem; color: #555; }
+        
+        .grid { display: flex; gap: 40px; }
+        .left-col { width: 30%; border-right: 1px solid #eaeaea; padding-right: 20px; }
+        .right-col { width: 70%; }
+
+        .section { margin-bottom: 25px; }
+        .section-title { font-size: 1rem; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 15px; color: #222; }
+        
+        .item { margin-bottom: 15px; }
+        .item-header { font-weight: bold; }
+        .item-sub { color: #666; font-size: 0.9rem; }
+        .item-desc { font-size: 0.9rem; margin-top: 5px; }
+
+        .side-item { margin-bottom: 20px; font-size: 0.9rem; }
+        .side-item strong { display: block; margin-bottom: 3px; }
+
+        .controls { text-align: center; margin-bottom: 30px; }
+        .btn { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="controls no-print">
+        <button class="btn" onclick="window.print()">🖨️ Print PDF</button>
+        <a href="/" class="btn" style="background:#64748b;">✏️ Edit</a>
+    </div>
+
+    <div class="header">
+        <h1>{{ cv.fullName }}</h1>
+        <div class="contact-info">
+            {% if cv.city %}{{ cv.city }} | {% endif %}
+            {% if cv.phone %}{{ cv.phone }} | {% endif %}
+            {% if cv.email %}{{ cv.email }}{% endif %}
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="left-col">
+            {% if cv.skills %}
+            <div class="section">
+                <div class="section-title">Skills</div>
+                <div class="side-item">{{ cv.skills }}</div>
+            </div>
+            {% endif %}
+
+            {% if cv.languages %}
+            <div class="section">
+                <div class="section-title">Languages</div>
+                <div class="side-item">{{ cv.languages }}</div>
+            </div>
+            {% endif %}
+
+            <div class="section">
+                <div class="section-title">Web & Social</div>
+                {% if cv.linkedin %}<div class="side-item"><strong>LinkedIn</strong>{{ cv.linkedin }}</div>{% endif %}
+                {% if cv.github %}<div class="side-item"><strong>GitHub</strong>{{ cv.github }}</div>{% endif %}
+            </div>
+
+            {% if cv.other_qualifications %}
+            <div class="section">
+                <div class="section-title">Certifications</div>
+                <div class="side-item">{{ cv.other_qualifications }}</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="right-col">
+            {% if cv.objective %}
+            <div class="section">
+                <div class="section-title">Summary</div>
+                <p class="item-desc" style="margin-top:0;">{{ cv.objective }}</p>
+            </div>
+            {% endif %}
+
+            {% if cv.projects %}
+            <div class="section">
+                <div class="section-title">Experience / Projects</div>
+                {% for proj in cv.projects %}
+                <div class="item">
+                    <div class="item-header">{{ proj.title }}</div>
+                    <p class="item-desc">{{ proj.desc }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if cv.education %}
+            <div class="section">
+                <div class="section-title">Education</div>
+                {% for edu in cv.education %}
+                <div class="item">
+                    <div class="item-header">{{ edu.degree }} {% if edu.board %}({{ edu.board }}){% endif %}</div>
+                    <div class="item-sub">{{ edu.school }} | {{ edu.year }}</div>
+                    {% if edu.grade %}<div class="item-desc">Grade: {{ edu.grade }}</div>{% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="custom-print-footer"><span id="date2"></span><span>{{ cv.fullName }}</span></div>
+    <script> document.getElementById('date2').innerText = new Date().toLocaleDateString('en-US'); </script>
+</body>
+</html>
