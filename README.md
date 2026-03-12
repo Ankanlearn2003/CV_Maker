@@ -1,4 +1,4 @@
-                                   **  AI-Powered CV Builder **
+                                   -: AI-Powered CV Builder :-
 
 A dynamic, web-based CV generation tool that uses AI to automatically write professional Career Objectives based on a user's skills and project experience. Built with Python (Flask) and integrated with the OpenRouter API.
 
