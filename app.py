@@ -3,14 +3,12 @@ import requests
 
 app = Flask(__name__)
 
-# --- CONFIGURATION ---
-# IMPORTANT: Paste your OpenRouter API key inside the quotes below
+
 API_KEY = "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"
 MODEL_NAME = "google/gemini-2.0-flash-001"
 
 @app.route('/')
 def index():
-    # Renders the HTML form (index.html)
     return render_template('index.html')
 
 @app.route('/generate-objective', methods=['POST'])
@@ -18,7 +16,6 @@ def generate_objective():
     """Handles the AJAX request from the frontend to generate the AI Objective."""
     data = request.json
     
-    # Constructing the prompt based on user input
     prompt = f"""
     Create a professional 2-sentence Career Objective for a CV.
     Name: {data.get('fullName', 'Candidate')}
@@ -60,7 +57,6 @@ def generate_objective():
 def export_cv():
     """Processes the submitted form and passes the data to the chosen CV template."""
     
-    # Extract standard single-value fields
     cv_data = {
         "fullName": request.form.get("fullName"),
         "dob": request.form.get("dob"),
@@ -76,7 +72,6 @@ def export_cv():
         "extra": request.form.get("extra")
     }
 
-    # Process Dynamic Education Arrays
     degrees = request.form.getlist("edu_degree[]")
     boards = request.form.getlist("edu_board[]")
     schools = request.form.getlist("edu_school[]")
@@ -95,7 +90,6 @@ def export_cv():
             })
     cv_data["education"] = education_list
 
-    # Process Dynamic Project Arrays
     p_titles = request.form.getlist("p_title[]")
     p_descs = request.form.getlist("p_desc[]")
     
@@ -108,7 +102,6 @@ def export_cv():
             })
     cv_data["projects"] = project_list
 
-    # --- NEW: Check which template was selected ---
     template_choice = request.form.get("template_choice", "1")
     
     if template_choice == "2":
